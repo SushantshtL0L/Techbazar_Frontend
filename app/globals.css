@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card-bg: #f8fafc;
+  --sidebar-bg: #f1f5f9;
+  --border-color: #e2e8f0;
+  --accent: #0A2540;
+  --accent-secondary: #164070;
+  --accent-glow: rgba(10, 37, 64, 0.15);
+}
+
+@keyframes hero-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@layer utilities {
+  .animate-hero-marquee {
+    animation: hero-marquee 25s linear infinite;
+  }
+}
+
+/* Base dark class for global CSS variables */
+.dark {
+  --background: #0a0f1e !important;
+  --foreground: #e2e8f0 !important;
+  --card-bg: #0f172a !important;
+  --sidebar-bg: #080d1a !important;
+  --border-color: #1e2a3a !important;
+  --accent: #0A2540 !important;
+  --accent-secondary: #164070 !important;
+  --accent-glow: rgba(10, 37, 64, 0.12) !important;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
