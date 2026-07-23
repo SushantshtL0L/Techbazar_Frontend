@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const loginSchema = z.object({
   email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string().min(8, "Password must be at least 8 characters").max(16, "Password must be at most 16 characters"),
 });
 
 export type LoginData = z.infer<typeof loginSchema>;
@@ -10,7 +10,13 @@ export type LoginData = z.infer<typeof loginSchema>;
 export const registerSchema = z.object({
   name: z.string().min(2, "Name is required"),
   email: z.string().email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z.string()
+    .min(8, "Password must be at least 8 characters")
+    .max(16, "Password must be at most 16 characters")
+    .regex(/[a-z]/, "Password needs lower case characters")
+    .regex(/[A-Z]/, "Password needs higher case characters")
+    .regex(/[0-9]/, "Password needs numbers")
+    .regex(/[$@#&!+\-]/, "Password needs special characters"),
   confirmPassword: z.string(),
   role: z.enum(["user", "seller"]).optional(),
 }).refine((data) => data.password === data.confirmPassword, {
