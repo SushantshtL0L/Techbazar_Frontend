@@ -11,6 +11,20 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
+let csrfToken: string | null = null;
+
+const fetchCsrfToken = async () => {
+  if (!csrfToken && typeof window !== "undefined") {
+    try {
+      const res = await axiosInstance.get('/api/csrf-token');
+      csrfToken = res.data.csrfToken;
+    } catch (error) {
+      console.warn("Could not fetch CSRF token");
+    }
+  }
+  return csrfToken;
+};
+
 axiosInstance.interceptors.request.use(
   async (config) => {
     if (typeof window !== "undefined") {
@@ -28,6 +42,14 @@ axiosInstance.interceptors.request.use(
         }
       } catch (e) {
         // Ignored
+      }
+      }
+
+    
+    if (typeof window !== "undefined" && ['post', 'put', 'delete', 'patch'].includes(config.method?.toLowerCase() || '')) {
+      const token = await fetchCsrfToken();
+      if (token) {
+        config.headers['CSRF-Token'] = token;
       }
     }
 
