@@ -41,7 +41,7 @@ axiosInstance.interceptors.request.use(
           config.headers.Authorization = `Bearer ${token}`;
         }
       } catch (e) {
-        // Ignored
+        
       }
       }
 
