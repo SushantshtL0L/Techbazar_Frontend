@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react'
-import Sidebar from '@/app/dashboard/_components/Sidebar'
+import Sidebar from '@/app/(public)/_components/Sidebar'
 // import { describe, it, expect, jest, beforeEach } from '@jest/globals'
 
 // Mock contexts

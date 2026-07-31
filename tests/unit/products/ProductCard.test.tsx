@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import ProductCard from '@/app/dashboard/_components/ProductCard'
+import ProductCard from '@/app/(public)/_components/ProductCard'
 // import { describe, it, expect, jest, beforeEach } from '@jest/globals'
 import { useRouter } from 'next/navigation'
 
