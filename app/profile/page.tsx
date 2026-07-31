@@ -11,7 +11,7 @@ import Link from "next/link";
 
 import ChangePasswordForm from "./_components/ChangePasswordForm";
 import OrdersTab from "./_components/OrdersTab";
-import Sidebar from "@/app/dashboard/_components/Sidebar";
+import Sidebar from "@/app/(public)/_components/Sidebar";
 
 type ProfileTab = "account" | "orders" | "security";
 
