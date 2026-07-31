@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useEffect, useState, Suspense } from "react";
-import Sidebar from "./_components/Sidebar";
-import ProductCard from "./_components/ProductCard";
-import Pagination from "./_components/Pagination";
-import SupportSection from "./_components/SupportSection";
-import FeaturedOffers from "./_components/FeaturedOffers";
-import SellerDashboard from "./_components/SellerDashboard";
-import SettingsDropdown from "./_components/SettingsDropdown";
-import NotificationPanel from "./_components/NotificationPanel";
+import Sidebar from "../_components/Sidebar";
+import ProductCard from "../_components/ProductCard";
+import Pagination from "../_components/Pagination";
+import SupportSection from "../_components/SupportSection";
+import FeaturedOffers from "../_components/FeaturedOffers";
+import SellerDashboard from "../_components/SellerDashboard";
+import SettingsDropdown from "../_components/SettingsDropdown";
+import NotificationPanel from "../_components/NotificationPanel";
 import { handleGetAllProducts } from "@/lib/actions/product.actions";
 import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -29,7 +29,7 @@ function DashboardLoading() {
 
   return (
     <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a] text-white' : 'bg-[#f8f9fa] text-neutral-900'}`}>
-      <Sidebar activePage="shoes" />
+            <Sidebar activePage="shoes" />
       <main className={`flex-1 p-10 lg:p-16 overflow-hidden transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
         <div className="flex flex-col items-center justify-center min-h-[400px] gap-6">
           <motion.div
@@ -102,8 +102,7 @@ function DashboardPageContent() {
 
   return (
     <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a] text-white' : 'bg-[#f8f9fa] text-neutral-900'}`}>
-      <Sidebar activePage="shoes" />
-
+            <Sidebar activePage="shoes" />
       {/* Main Content */}
       <main className={`flex-1 p-10 lg:p-16 overflow-hidden transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 px-4 gap-6">
@@ -208,7 +207,7 @@ function DashboardPageContent() {
             <Pagination
               currentPage={page}
               totalPages={totalPages}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={(p: any) => setPage(p)}
             />
 
             {userRole === 'buyer' && (
@@ -222,3 +221,4 @@ function DashboardPageContent() {
     </div>
   );
 }
+
