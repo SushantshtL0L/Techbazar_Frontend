@@ -302,7 +302,7 @@ export default function HomePage() {
                 return (
                   <div key={id} className="group relative shrink-0 w-[220px]">
                     <Link
-                      href={`/dashboard/product/${id}`}
+                      href={`/product/${id}`}
                       className="block bg-white border border-gray-100 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
                     >
                       {/* Image */}
