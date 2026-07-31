@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Sidebar from "../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCart } from "@/context/CartContext";
 import { useTheme } from "@/context/ThemeContext";
@@ -37,10 +37,9 @@ export default function WishlistPage() {
     };
 
     return (
-        <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === "dark" ? "bg-[#0a0a0a]" : "bg-[#f5f5f5]"}`}>
-            <Sidebar activePage="wishlist" />
-
-            <main className={`flex-1 flex flex-col transition-colors duration-300 ${theme === "dark" ? "bg-[#0a0a0a]" : "bg-white"}`}>
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${theme === "dark" ? "bg-[#0a0a0a]" : "bg-[#f5f5f5]"}`}>
+            <div className="fixed top-0 w-full z-50"><Header /></div>
+            <main className={`pt-32 flex-1 flex flex-col transition-colors duration-300 ${theme === "dark" ? "bg-[#0a0a0a]" : "bg-white"}`}>
                 <div className="p-10 lg:p-16 max-w-6xl mx-auto w-full">
 
                     {/* Header */}
@@ -77,7 +76,7 @@ export default function WishlistPage() {
                             </div>
                             <Link href="/dashboard">
                                 <button className={`flex items-center gap-3 px-10 py-4 rounded-2xl font-bold text-sm uppercase tracking-widest transition-all shadow-lg ${theme === "dark" ? "bg-white text-black hover:bg-neutral-200" : "bg-neutral-900 text-white hover:bg-neutral-800"}`}>
-                                    Browse Gadgets <FiArrowRight />
+                                    Browse Products <FiArrowRight />
                                 </button>
                             </Link>
                         </motion.div>
@@ -125,7 +124,7 @@ export default function WishlistPage() {
                                             <div className="p-4">
                                                 <div className="mb-3">
                                                     <span className={`text-xs font-bold uppercase tracking-wide text-blue-500`}>
-                                                        {item.brand || "Gadget"}
+                                                        {item.brand || "TechBazar"}
                                                     </span>
                                                     <div className="flex justify-between items-center mt-1">
                                                         <h3 className={`text-base font-semibold leading-tight line-clamp-1 ${theme === "dark" ? "text-white" : "text-neutral-900"}`}>
@@ -145,14 +144,14 @@ export default function WishlistPage() {
                                                     </span>
 
                                                     <div className="flex gap-2">
-                                                        <Link href={`/dashboard/product/${item.id}`}>
+                                                        <Link href={`/product/${item.id}`}>
                                                             <button className={`w-10 h-10 rounded-2xl flex items-center justify-center transition-all text-sm border ${theme === "dark" ? "border-neutral-700 text-neutral-400 hover:border-white hover:text-white" : "border-neutral-200 text-neutral-500 hover:border-neutral-900 hover:text-neutral-900"}`}>
                                                                 <FiArrowRight />
                                                             </button>
                                                         </Link>
                                                         <button
                                                             onClick={() => handleAddToCart(item)}
-                                                            className="flex items-center gap-2 px-4 h-10 rounded-2xl bg-[#6db56f] text-white text-sm font-bold hover:bg-[#5da061] transition-all active:scale-95 shadow-lg shadow-green-500/20"
+                                                            className="flex items-center gap-2 px-4 h-10 rounded-2xl bg-blue-600 text-white text-sm font-bold hover:bg-blue-700 transition-all active:scale-95 shadow-lg shadow-blue-500/20"
                                                         >
                                                             <FiShoppingBag className="text-sm" />
                                                             Add to Cart
