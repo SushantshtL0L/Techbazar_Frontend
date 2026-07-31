@@ -43,7 +43,7 @@ const ProductCard = ({ product, currentUserId, onDeleted }: { product: any, curr
     const canManage = isOwner || isAdmin;
 
     const navigateToDetail = () => {
-        router.push(`/dashboard/product/${product._id || product.id}`);
+        router.push(`/product/${product._id || product.id}`);
     };
 
     const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -124,7 +124,7 @@ const ProductCard = ({ product, currentUserId, onDeleted }: { product: any, curr
                         {canManage && (
                             <>
                                 <Link
-                                    href={`/dashboard/product/${product._id || product.id}/edit`}
+                                    href={`/product/${product._id || product.id}/edit`}
                                     onClick={(e) => e.stopPropagation()}
                                     className="w-10 h-10 bg-blue-500/10 backdrop-blur-md rounded-xl flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition-all shadow-sm"
                                 >
