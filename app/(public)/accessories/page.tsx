@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
 import { 
   FaHeadphones, FaMobile, FaBolt, FaClock, FaKeyboard, 
@@ -71,7 +71,7 @@ export default function AccessoriesPage() {
   return (
     <>
       <div className="fixed top-0 w-full z-50">
-        <Header />
+        <div className="fixed top-0 w-full z-50"><Header /></div>
       </div>
       <div className="min-h-screen bg-gray-50 pb-20 pt-24">
       
@@ -334,3 +334,4 @@ export default function AccessoriesPage() {
     </>
   );
 }
+
