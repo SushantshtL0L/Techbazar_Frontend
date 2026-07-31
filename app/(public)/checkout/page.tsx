@@ -1,234 +1,276 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "react-toastify";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { handleCreateOrder } from "@/lib/actions/order.actions";
 import Image from "next/image";
-import { useState } from "react";
-import { FaLock, FaArrowLeft, FaCheckCircle, FaShieldAlt, FaTruck, FaPhoneAlt } from "react-icons/fa";
+
+const PAYMENT_METHODS = [
+    { id: 'cod', name: 'Cash on Delivery', description: 'Pay at doorstep' },
+    { id: 'esewa', name: 'eSewa', description: 'Pay using eSewa Wallet' },
+    { id: 'khalti', name: 'Khalti', description: 'Pay using Khalti Wallet' }
+];
 
 export default function CheckoutPage() {
-  const [paymentMethod, setPaymentMethod] = useState("esewa");
+    const { cartItems, totalPrice, clearCart } = useCart();
+    const { user, loading } = useAuth();
+    const router = useRouter();
 
-  return (
-    <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
-      {/* MINIMAL HEADER */}
-      <header className="bg-white border-b border-gray-200 py-4 px-6 lg:px-12 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/" className="font-black text-xl text-[#0A2540] tracking-tight">TechBazar</Link>
-            <div className="h-6 w-px bg-gray-300 hidden md:block"></div>
-            <div className="hidden md:flex items-center gap-2 text-xs font-bold text-gray-500 uppercase tracking-widest">
-              <FaLock /> Secure Checkout
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+
+    const [formData, setFormData] = useState({
+        name: user?.name || "",
+        phone: user?.phone || "",
+        address: user?.location || "",
+        city: "Kathmandu",
+        paymentMethod: "cod"
+    });
+
+    useEffect(() => {
+        if (user) {
+            setFormData(prev => ({
+                ...prev,
+                name: prev.name || user.name || "",
+                phone: prev.phone || user.phone || "",
+                address: prev.address || user.location || ""
+            }));
+        }
+    }, [user]);
+
+    useEffect(() => {
+        if (!loading && !user) {
+            router.push("/login?redirectTo=/dashboard/checkout");
+        }
+    }, [user, loading, router]);
+
+    useEffect(() => {
+        if (cartItems.length === 0 && !isSuccess) {
+            router.push("/dashboard/cart");
+        }
+    }, [cartItems, isSuccess, router]);
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const processOrder = async () => {
+        if (!formData.name || !formData.phone || !formData.address) {
+            toast.warning("Please fill in all shipping details");
+            return;
+        }
+
+        setIsProcessing(true);
+
+        try {
+            const orderData = {
+                items: cartItems.map(item => ({
+                    product: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.quantity,
+                    size: item.size,
+                    image: item.image
+                })),
+                totalAmount: totalPrice,
+                paymentMethod: formData.paymentMethod,
+                shippingAddress: {
+                    fullName: formData.name,
+                    phone: formData.phone,
+                    address: formData.address,
+                    city: formData.city
+                }
+            };
+
+            const result = await handleCreateOrder(orderData);
+
+            if (result.success) {
+                setIsProcessing(false);
+                setIsSuccess(true);
+                clearCart();
+                toast.success("Order Placed Successfully!");
+            } else {
+                setIsProcessing(false);
+                toast.error(result.message || "Failed to place order");
+            }
+        } catch (error) {
+            setIsProcessing(false);
+            toast.error("An error occurred while placing your order");
+        }
+    };
+
+    if (isSuccess) {
+        return (
+            <div className="min-h-screen bg-white">
+                <main className="max-w-3xl mx-auto px-6 py-20 text-center">
+                    <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span className="text-5xl text-green-600">✓</span>
+                    </div>
+                    <h2 className="text-4xl font-black text-[#0A2540] mb-4">Order Placed!</h2>
+                    <p className="text-gray-500 mb-8">Thank you for your purchase. Your order is being processed.</p>
+                    <Link href="/products" className="bg-[#0A2540] text-white px-8 py-3 rounded-full font-bold hover:bg-[#164070] transition-colors">
+                        Continue Shopping
+                    </Link>
+                </main>
             </div>
-          </div>
-          <Link href="/products" className="text-sm font-bold text-gray-600 hover:text-[#0A2540] flex items-center gap-2 transition-colors">
-            <FaArrowLeft /> Back to Shop
-          </Link>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-50 font-sans">
+            <div className="bg-[#0A2540] text-white py-8 px-6 lg:px-8 shadow-md">
+                <div className="max-w-7xl mx-auto flex items-center justify-between">
+                    <h1 className="text-3xl font-black">Checkout</h1>
+                    <Link href="/" className="text-white hover:text-gray-300 font-semibold flex items-center gap-2 transition-colors">
+                        ← Back to Home
+                    </Link>
+                </div>
+            </div>
+
+            <main className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+                <div className="flex flex-col lg:flex-row gap-12">
+                    {/* LEFT COLUMN: DETAILS */}
+                    <div className="w-full lg:w-2/3 space-y-8">
+                        {/* Shipping Details */}
+                        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+                            <h2 className="text-2xl font-bold text-[#0A2540] mb-6 flex items-center gap-2">
+                                <span className="bg-[#0A2540] text-white w-8 h-8 flex items-center justify-center rounded-full text-sm">1</span> 
+                                Shipping Details
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                                    <input
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleInputChange}
+                                        placeholder="John Doe"
+                                        className="w-full border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                                    <input
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        placeholder="98XXXXXXXX"
+                                        className="w-full border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540]"
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">Street Address</label>
+                                    <input
+                                        name="address"
+                                        value={formData.address}
+                                        onChange={handleInputChange}
+                                        placeholder="Building, Street, Area"
+                                        className="w-full border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540]"
+                                    />
+                                </div>
+                                <div className="md:col-span-2">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-2">City</label>
+                                    <select
+                                        name="city"
+                                        value={formData.city}
+                                        onChange={handleInputChange}
+                                        className="w-full border border-gray-200 rounded-xl py-3 px-4 outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540] bg-white"
+                                    >
+                                        <option>Kathmandu</option>
+                                        <option>Lalitpur</option>
+                                        <option>Bhaktapur</option>
+                                        <option>Pokhara</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Payment Method */}
+                        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+                            <h2 className="text-2xl font-bold text-[#0A2540] mb-6 flex items-center gap-2">
+                                <span className="bg-[#0A2540] text-white w-8 h-8 flex items-center justify-center rounded-full text-sm">2</span> 
+                                Payment Method
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {PAYMENT_METHODS.map((method) => (
+                                    <label 
+                                        key={method.id} 
+                                        className={`border rounded-xl p-4 cursor-pointer transition-colors ${formData.paymentMethod === method.id ? 'border-[#0A2540] bg-blue-50/30' : 'border-gray-200 hover:border-gray-300'}`}
+                                    >
+                                        <div className="flex items-center gap-3 mb-2">
+                                            <input 
+                                                type="radio" 
+                                                name="paymentMethod" 
+                                                value={method.id} 
+                                                checked={formData.paymentMethod === method.id}
+                                                onChange={handleInputChange}
+                                                className="accent-[#0A2540] w-4 h-4"
+                                            />
+                                            <span className="font-bold text-gray-900">{method.name}</span>
+                                        </div>
+                                        <p className="text-xs text-gray-500 pl-7">{method.description}</p>
+                                    </label>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* RIGHT COLUMN: SUMMARY */}
+                    <div className="w-full lg:w-1/3">
+                        <div className="bg-white rounded-3xl p-8 border border-gray-100 shadow-sm sticky top-32">
+                            <h3 className="text-xl font-bold text-[#0A2540] mb-6">Order Summary</h3>
+
+                            <div className="space-y-4 mb-6">
+                                {cartItems.map((item) => (
+                                    <div key={`${item.id}-${item.size}`} className="flex items-center gap-4 border-b border-gray-100 pb-4">
+                                        <div className="w-16 h-16 bg-gray-50 rounded-xl p-1 relative flex-shrink-0">
+                                            <img
+                                                src={item.image.startsWith("http") ? item.image : `http://localhost:5050${item.image}`}
+                                                alt={item.name}
+                                                className="w-full h-full object-contain"
+                                            />
+                                        </div>
+                                        <div className="flex-1 overflow-hidden">
+                                            <h4 className="font-bold text-gray-900 text-sm truncate">{item.name}</h4>
+                                            <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
+                                            <p className="font-black text-[#0A2540] text-sm">Rs {(item.price * item.quantity).toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="space-y-3 mb-8">
+                                <div className="flex justify-between text-gray-600">
+                                    <span>Subtotal</span>
+                                    <span className="font-bold">Rs {totalPrice.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between text-gray-600">
+                                    <span>Shipping</span>
+                                    <span className="font-bold text-green-600">Free</span>
+                                </div>
+                                <div className="h-px bg-gray-200 my-2" />
+                                <div className="flex justify-between text-lg">
+                                    <span className="font-bold text-gray-900">Total</span>
+                                    <span className="font-black text-[#0A2540]">Rs {totalPrice.toLocaleString()}</span>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={processOrder}
+                                disabled={isProcessing}
+                                className="w-full bg-[#0A2540] text-white py-4 rounded-xl font-bold hover:bg-[#164070] transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                            >
+                                {isProcessing ? 'Processing...' : 'Confirm Order'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
         </div>
-      </header>
-
-      {/* MAIN CHECKOUT CONTENT */}
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10 w-full flex-grow flex flex-col lg:flex-row gap-8">
-        
-        {/* LEFT COLUMN: FORMS */}
-        <div className="w-full lg:w-2/3 space-y-6">
-          
-          {/* STEP 1: SHIPPING DETAILS */}
-          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#0A2540] text-white flex items-center justify-center font-bold">1</div>
-              <h2 className="text-xl font-bold text-gray-900">Shipping Details</h2>
-            </div>
-            
-            <form className="space-y-5">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-2">Full Name</label>
-                  <input type="text" placeholder="e.g. Rahul hero" className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540] transition-colors" />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-2">Mobile Number</label>
-                  <input type="text" placeholder="98XXXXXXX" className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540] transition-colors" />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-2">Delivery Address</label>
-                <input type="text" placeholder="Street name, House No., Landmark" className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540] transition-colors" />
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-2">City</label>
-                  <select className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540] bg-white text-gray-900 transition-colors">
-                    <option>Kathmandu</option>
-                    <option>Lalitpur</option>
-                    <option>Bhaktapur</option>
-                    <option>Pokhara</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-2">Area</label>
-                  <input type="text" placeholder="e.g. New Baneshwor" className="w-full border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#0A2540] focus:ring-1 focus:ring-[#0A2540] transition-colors" />
-                </div>
-              </div>
-            </form>
-          </div>
-
-          {/* STEP 2: PAYMENT METHOD */}
-          <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 rounded-full bg-[#0A2540] text-white flex items-center justify-center font-bold">2</div>
-              <h2 className="text-xl font-bold text-gray-900">Payment Method</h2>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* eSewa */}
-              <div 
-                onClick={() => setPaymentMethod('esewa')}
-                className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center justify-center gap-3 transition-all ${paymentMethod === 'esewa' ? 'border-[#0A2540] bg-[#0A2540]/5' : 'border-gray-200 hover:border-gray-300'}`}
-              >
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-bold text-xl tracking-tighter">eS</div>
-                <span className="text-sm font-bold text-gray-900">eSewa Wallet</span>
-              </div>
-              
-              {/* Khalti */}
-              <div 
-                onClick={() => setPaymentMethod('khalti')}
-                className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center justify-center gap-3 transition-all ${paymentMethod === 'khalti' ? 'border-[#0A2540] bg-[#0A2540]/5' : 'border-gray-200 hover:border-gray-300'}`}
-              >
-                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600 font-bold text-xl tracking-tighter">K</div>
-                <span className="text-sm font-bold text-gray-900">Khalti Wallet</span>
-              </div>
-              
-              {/* COD */}
-              <div 
-                onClick={() => setPaymentMethod('cod')}
-                className={`cursor-pointer border-2 rounded-xl p-4 flex flex-col items-center justify-center gap-3 transition-all ${paymentMethod === 'cod' ? 'border-[#0A2540] bg-[#0A2540]/5' : 'border-gray-200 hover:border-gray-300'}`}
-              >
-                <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 text-xl"><FaTruck /></div>
-                <span className="text-sm font-bold text-gray-900">Cash on Delivery</span>
-              </div>
-            </div>
-          </div>
-          
-          {/* TRUST BADGES */}
-          <div className="flex flex-wrap items-center justify-center gap-6 text-[10px] sm:text-xs font-bold text-gray-400 mt-8 mb-4">
-            <span className="flex items-center gap-1.5"><FaLock className="text-green-500" /> SSL SECURE ENCRYPTION</span>
-            <span className="flex items-center gap-1.5"><FaShieldAlt className="text-blue-500" /> AUTHENTICITY GUARANTEED</span>
-            <span className="flex items-center gap-1.5"><FaCheckCircle className="text-emerald-500" /> SAFE DELIVERY</span>
-          </div>
-          
-        </div>
-
-        {/* RIGHT COLUMN: ORDER SUMMARY */}
-        <div className="w-full lg:w-1/3">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 sticky top-24">
-            <h2 className="text-lg font-bold text-gray-900 mb-6">Order Summary</h2>
-            
-            {/* Items */}
-            <div className="space-y-4 mb-6">
-              <div className="flex gap-4">
-                <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-100 p-1">
-                  <Image src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=200&auto=format&fit=crop" alt="iPhone 15 Pro" width={50} height={50} className="object-contain mix-blend-multiply" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold text-gray-900 leading-tight">iPhone 15 Pro, 256GB</h4>
-                  <p className="text-[10px] text-gray-500 mt-1 mb-1">Condition: Brand New</p>
-                  <p className="text-sm font-black text-[#0A2540]">Rs. 1,85,000</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-4">
-                <div className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-100 p-1">
-                  <Image src="https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?q=80&w=200&auto=format&fit=crop" alt="Sony Headphones" width={50} height={50} className="object-contain mix-blend-multiply" />
-                </div>
-                <div className="flex-1">
-                  <h4 className="text-sm font-bold text-gray-900 leading-tight">Sony WH-1000XM5</h4>
-                  <p className="text-[10px] text-gray-500 mt-1 mb-1">Condition: Like New</p>
-                  <p className="text-sm font-black text-[#0A2540]">Rs. 42,500</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Totals */}
-            <div className="border-t border-b border-gray-100 py-4 mb-6 space-y-3">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Subtotal</span>
-                <span className="font-bold text-gray-900">Rs. 227,500</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Delivery Fee</span>
-                <span className="font-bold text-emerald-600">FREE</span>
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Tax (VAT 13%)</span>
-                <span className="font-bold text-gray-900">Included</span>
-              </div>
-            </div>
-            
-            <div className="flex justify-between items-center mb-6">
-              <span className="text-base font-bold text-gray-900">Total</span>
-              <span className="text-2xl font-black text-[#0A2540]">Rs. 227,500</span>
-            </div>
-            
-            <button className="w-full bg-[#0A2540] text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-[#164070] transition-colors shadow-lg">
-              <FaLock /> Place Order Securely
-            </button>
-            <p className="text-center text-[10px] text-gray-400 mt-4 leading-relaxed">
-              By placing your order, you agree to Gadget Pasale's <Link href="#" className="underline">Terms of Service</Link>.
-            </p>
-
-            {/* Help Widget */}
-            <div className="mt-8 bg-blue-50 border border-blue-100 rounded-xl p-4 flex gap-3">
-              <FaPhoneAlt className="text-blue-500 mt-1 flex-shrink-0" />
-              <div>
-                <h4 className="text-sm font-bold text-[#0A2540] mb-1">Need Help?</h4>
-                <p className="text-xs text-blue-800/70 mb-2">Our support team is available 24/7 for sales assistance.</p>
-                <p className="text-sm font-black text-blue-600">+977-97-8438007</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </main>
-
-      {/* FOOTER */}
-      <footer className="bg-[#0A2540] text-white py-12">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row justify-between gap-8">
-          <div className="max-w-xs">
-            <h4 className="font-bold text-lg mb-2">Gadget Pasale</h4>
-            <p className="text-xs text-slate-400">Nepal's most trusted marketplace for premium gadgets and certified pre-owned electronics.</p>
-          </div>
-          <div className="flex gap-16">
-            <div>
-              <h4 className="font-bold text-sm mb-4">Quick Links</h4>
-              <ul className="text-xs text-slate-400 space-y-2">
-                <li><Link href="#" className="hover:text-white">About Us</Link></li>
-                <li><Link href="#" className="hover:text-white">Shipping Info</Link></li>
-                <li><Link href="#" className="hover:text-white">Warranty Policy</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold text-sm mb-4">Legal</h4>
-              <ul className="text-xs text-slate-400 space-y-2">
-                <li><Link href="#" className="hover:text-white">Authenticity Guarantee</Link></li>
-                <li><Link href="#" className="hover:text-white">Privacy Policy</Link></li>
-                <li><Link href="#" className="hover:text-white">Terms of Use</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div>
-            <h4 className="font-bold text-sm mb-4">Secure Payments</h4>
-            <div className="flex gap-2 mb-4">
-               {/* Placeholder icons for payment methods */}
-               <div className="w-8 h-5 bg-white/20 rounded"></div>
-               <div className="w-8 h-5 bg-white/20 rounded"></div>
-               <div className="w-8 h-5 bg-white/20 rounded"></div>
-            </div>
-            <p className="text-[10px] text-slate-500">© 2024 Gadget Pasale Nepal. Authenticity Guaranteed.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
+    );
 }
