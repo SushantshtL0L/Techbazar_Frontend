@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
 import Header from '../_components/Header';
 import { FaLaptop, FaCheckCircle, FaShieldAlt, FaStar } from 'react-icons/fa';
@@ -70,7 +70,7 @@ export default function UsedLaptopsPage() {
   return (
     <>
       <div className="fixed top-0 w-full z-50">
-        <Header />
+        <div className="fixed top-0 w-full z-50"><Header /></div>
       </div>
 
       <div className="min-h-screen bg-[#F5F7FA] pt-24">
@@ -88,7 +88,7 @@ export default function UsedLaptopsPage() {
               Used Laptops
             </h1>
             <p className="text-xl text-gray-300 font-medium max-w-lg mx-auto leading-relaxed mb-10">
-              Tested, verified, and ready to use. Get a great laptop at a fraction of the price — with warranty.
+              Tested, verified, and ready to use. Get a great laptop at a fraction of the price â€” with warranty.
             </p>
             <div className="flex justify-center gap-4 flex-wrap">
               <Link href="/products?condition=used" className="px-8 py-3 bg-white text-[#0A2540] rounded-full font-bold text-sm hover:bg-gray-100 hover:shadow-lg transition-all active:scale-95">
@@ -124,7 +124,7 @@ export default function UsedLaptopsPage() {
               <p className="text-gray-500 text-sm mt-1">All verified and in stock</p>
             </div>
             <Link href="/products?condition=used" className="text-blue-600 font-bold text-sm hover:underline">
-              View All →
+              View All â†’
             </Link>
           </div>
 
@@ -148,8 +148,8 @@ export default function UsedLaptopsPage() {
                   <span className="text-[10px] font-black text-blue-600 uppercase tracking-widest">{laptop.brand}</span>
                   <h3 className="font-bold text-gray-900 text-sm leading-tight mt-1 mb-2 line-clamp-1">{laptop.name}</h3>
                   <div className="text-xs text-gray-500 space-y-0.5 mb-3">
-                    <p>🔲 {laptop.cpu}</p>
-                    <p>💾 {laptop.ram} RAM · {laptop.storage}</p>
+                    <p>ðŸ”² {laptop.cpu}</p>
+                    <p>ðŸ’¾ {laptop.ram} RAM Â· {laptop.storage}</p>
                   </div>
                   <div className="flex items-center gap-1 mb-3">
                     <FaStar className="text-yellow-400 text-xs" />
@@ -170,3 +170,4 @@ export default function UsedLaptopsPage() {
     </>
   );
 }
+
