@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
-import Sidebar from "../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import ProductCard from "../_components/ProductCard";
 import NotificationPanel from "../_components/NotificationPanel";
 import SettingsDropdown from "../_components/SettingsDropdown";
@@ -36,10 +36,9 @@ export default function SalesPage() {
     return (
         <div className={`flex min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a] text-white' : 'bg-[#f8f9fa] text-neutral-900'}`}>
             {/* Left Sidebar */}
-            <Sidebar activePage="sales" />
-
+            <div className="fixed top-0 w-full z-50"><Header /></div>
             {/* Main Content Area */}
-            <main className={`flex-1 p-8 lg:p-12 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+            <main className={`pt-32 flex-1 p-8 lg:p-12 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
 
                 {/* Header Section */}
                 <header className="flex justify-between items-center mb-10 pb-6 border-b border-neutral-100 dark:border-neutral-800">
@@ -87,3 +86,5 @@ export default function SalesPage() {
         </div>
     );
 }
+
+
