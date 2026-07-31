@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAllProducts } from "@/lib/api/product";
-import ProductCard from "@/app/dashboard/_components/ProductCard";
+import ProductCard from "./ProductCard";
 import { FiTrendingUp, FiArrowRight } from "react-icons/fi";
 import Link from "next/link";
 
