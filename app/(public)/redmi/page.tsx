@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
 import { FaShoppingCart, FaHeart, FaStar, FaMicrochip, FaMemory, FaHdd, FaChevronDown } from 'react-icons/fa';
 import Header from '../_components/Header';
@@ -63,7 +63,7 @@ export default function DellLaptopsPage() {
   return (
     <>
       <div className="fixed top-0 w-full z-50">
-        <Header />
+        <div className="fixed top-0 w-full z-50"><Header /></div>
       </div>
       <div className="min-h-screen bg-[#F5F7FA] pt-24">
 
@@ -212,8 +212,8 @@ export default function DellLaptopsPage() {
 
                   {/* Specs */}
                   <div className="flex flex-col gap-0.5 mb-3">
-                    <span className="text-xs text-gray-500">🔲 {product.specs.cpu}</span>
-                    <span className="text-xs text-gray-500">💾 {product.specs.ram} · {product.specs.storage}</span>
+                    <span className="text-xs text-gray-500">ðŸ”² {product.specs.cpu}</span>
+                    <span className="text-xs text-gray-500">ðŸ’¾ {product.specs.ram} Â· {product.specs.storage}</span>
                   </div>
 
                   {/* Rating */}
@@ -262,3 +262,4 @@ export default function DellLaptopsPage() {
     </>
   );
 }
+
