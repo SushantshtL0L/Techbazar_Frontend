@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import DashboardChart from "../../dashboard/_components/DashboardChart";
+import DashboardChart from "../../(public)/_components/DashboardChart";
 import { handleGetChartData } from "@/lib/actions/order.actions";
 
 export default function AdminCharts() {
