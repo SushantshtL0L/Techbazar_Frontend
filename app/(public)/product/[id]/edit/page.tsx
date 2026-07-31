@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { FiArrowLeft, FiBox, FiDollarSign, FiTag, FiFileText, FiCamera, FiSave, FiLayers, FiRotateCcw } from "react-icons/fi";
 import { handleGetProductById, handleUpdateProduct } from "@/lib/actions/product.actions";
 import { toast } from "react-toastify";
-import Sidebar from "../../../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import { useTheme } from "@/context/ThemeContext";
 
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -88,7 +88,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
                 if (result.success) {
                     toast.success("Product updated successfully!");
-                    router.push(`/dashboard/product/${id}`);
+                    router.push(`/product/${id}`);
                 } else {
                     setError(result.message || "Failed to update product");
                     toast.error(result.message || "Failed to update product");
@@ -109,12 +109,12 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     }
 
     return (
-        <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
-            <Sidebar activePage="thrifts" />
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
+            <div className="fixed top-0 w-full z-50"><Header /></div>
 
-            <main className={`flex-1 p-8 md:p-16 overflow-y-auto transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+            <main className={`pt-32 flex-1 p-8 md:p-16 overflow-y-auto transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
                 <div className="max-w-4xl mx-auto space-y-12">
-                    <Link href={`/dashboard/product/${id}`} className={`flex items-center gap-2 transition-colors font-bold group ${theme === 'dark' ? 'text-neutral-500 hover:text-white' : 'text-gray-500 hover:text-black'}`}>
+                    <Link href={`/product/${id}`} className={`flex items-center gap-2 transition-colors font-bold group ${theme === 'dark' ? 'text-neutral-500 hover:text-white' : 'text-gray-500 hover:text-black'}`}>
                         <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" /> Back to Product
                     </Link>
 

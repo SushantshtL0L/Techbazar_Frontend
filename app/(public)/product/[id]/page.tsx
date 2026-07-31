@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, use } from "react";
-import Sidebar from "../../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import { handleGetProductById } from "@/lib/actions/product.actions";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/context/CartContext";
@@ -157,10 +157,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     const imageUrl = product.image.startsWith("http") ? product.image : `http://localhost:5050${product.image}`;
 
     return (
-        <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
-            <Sidebar activePage="shoes" />
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
+            <div className="fixed top-0 w-full z-50">
+                <Header />
+            </div>
 
-            <main className={`flex-1 relative flex flex-col min-h-screen overflow-y-auto transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#e8e2d6]'}`}>
+            <main className={`pt-36 flex-1 relative flex flex-col min-h-screen transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#e8e2d6]'}`}>
 
                 {/* Product Section */}
                 <div className="min-h-screen flex items-center px-24 relative overflow-hidden">
@@ -263,7 +265,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
                             {canManage ? (
                                 <div className="flex gap-4">
                                     <Link
-                                        href={`/dashboard/product/${product._id || product.id}/edit`}
+                                        href={`/product/${product._id || product.id}/edit`}
                                         className={`px-10 py-5 rounded-2xl flex items-center gap-3 font-bold transition-all transform active:scale-95 ${theme === 'dark' ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
                                     >
                                         <FiEdit size={24} /> Edit Listing
