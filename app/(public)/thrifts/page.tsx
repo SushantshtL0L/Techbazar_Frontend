@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
-import Sidebar from "../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import ProductCard from "../_components/ProductCard";
 import SupportSection from "../_components/SupportSection";
 import { handleGetAllProducts } from "@/lib/actions/product.actions";
@@ -53,11 +53,10 @@ export default function ThriftsPage() {
     };
 
     return (
-        <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
-            <Sidebar activePage="thrifts" />
-
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
+            <div className="fixed top-0 w-full z-50"><Header /></div>
             {/* Main Content */}
-            <main className={`flex-1 p-20 transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+            <main className={`pt-32 flex-1 p-20 transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
                 <header className="flex justify-between items-center mb-20 px-4">
                     <h2 className={`text-2xl font-bold tracking-tight transition-colors ${theme === 'dark' ? 'text-white' : 'text-gray-800'}`}>Thrift Collection</h2>
                     <div className="text-[13px] font-bold text-gray-400 uppercase tracking-widest">
@@ -86,3 +85,5 @@ export default function ThriftsPage() {
         </div>
     );
 }
+
+
