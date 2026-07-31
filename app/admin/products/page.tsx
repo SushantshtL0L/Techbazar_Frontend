@@ -107,12 +107,10 @@ export default function AdminProductsPage() {
                                     </td>
                                     <td className="px-8 py-6 text-right">
                                         <div className="flex justify-end gap-2">
-                                            <Link href={`/dashboard/product/${product._id}`} title="View" target="_blank">
-                                                <div className="p-2 text-gray-500 hover:text-white transition-colors">
-                                                    <FiEye className="text-lg" />
-                                                </div>
+                                            <Link href={`/product/${product._id}`} title="View" target="_blank">
+                                                <FiEye className={`text-xl hover:text-blue-500 transition-colors text-neutral-400`} />
                                             </Link>
-                                            <Link href={`/dashboard/product/${product._id}/edit`} title="Edit">
+                                            <Link href={`/product/${product._id}/edit`} title="Edit">
                                                 <div className="p-2 text-gray-500 hover:text-blue-500 transition-colors">
                                                     <FiEdit className="text-lg" />
                                                 </div>
