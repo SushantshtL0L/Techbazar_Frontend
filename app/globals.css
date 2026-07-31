@@ -2,14 +2,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --card-bg: #f8fafc;
-  --sidebar-bg: #f1f5f9;
-  --border-color: #e2e8f0;
-  --accent: #0A2540;
-  --accent-secondary: #164070;
-  --accent-glow: rgba(10, 37, 64, 0.15);
+  --background: #f8faf9;
+  --foreground: #1a2e22;
+  --card-bg: #ffffff;
+  --sidebar-bg: #f0f5f2;
+  --border-color: #d4e0d8;
+  --accent: #006C49;
+  --accent-secondary: #2B6954;
+  --accent-tertiary: #52625C;
+  --accent-neutral: #6C7A71;
+  --accent-glow: rgba(0, 108, 73, 0.2);
+  --accent-light: #e6f2ed;
 }
 
 @keyframes hero-marquee {
@@ -25,14 +28,17 @@
 
 /* Base dark class for global CSS variables */
 .dark {
-  --background: #0a0f1e !important;
-  --foreground: #e2e8f0 !important;
-  --card-bg: #0f172a !important;
-  --sidebar-bg: #080d1a !important;
-  --border-color: #1e2a3a !important;
-  --accent: #0A2540 !important;
-  --accent-secondary: #164070 !important;
-  --accent-glow: rgba(10, 37, 64, 0.12) !important;
+  --background: #0a120d !important;
+  --foreground: #e8f2ec !important;
+  --card-bg: #0f1f17 !important;
+  --sidebar-bg: #081009 !important;
+  --border-color: #1a3326 !important;
+  --accent: #00a86b !important;
+  --accent-secondary: #2B9954 !important;
+  --accent-tertiary: #52826C !important;
+  --accent-neutral: #6C9A81 !important;
+  --accent-glow: rgba(0, 168, 107, 0.25) !important;
+  --accent-light: #0d2b1d !important;
   color-scheme: dark;
 }
 
@@ -44,6 +50,65 @@ body {
   min-height: 100vh;
 }
 
+/* =============================================
+   GREEN PALETTE OVERRIDES
+   These globally replace Tailwind blue/indigo
+   classes with the brand green palette.
+   ============================================= */
+
+/* Backgrounds */
+.bg-blue-600, .bg-blue-500, .bg-indigo-600, .bg-indigo-500 {
+  background-color: #006C49 !important;
+}
+.hover\:bg-blue-600:hover, .hover\:bg-blue-700:hover,
+.hover\:bg-indigo-600:hover, .hover\:bg-indigo-700:hover {
+  background-color: #2B6954 !important;
+}
+.bg-blue-50, .bg-blue-100 {
+  background-color: #e6f2ed !important;
+}
+.bg-blue-600\/20 {
+  background-color: rgba(0, 108, 73, 0.2) !important;
+}
+
+/* Text */
+.text-blue-600, .text-blue-500, .text-indigo-600, .text-indigo-500 {
+  color: #006C49 !important;
+}
+.group-hover\:text-blue-600:is(:hover *),
+.hover\:text-blue-600:hover {
+  color: #006C49 !important;
+}
+.text-blue-100, .text-blue-50 {
+  color: #e6f2ed !important;
+}
+
+/* Borders */
+.border-blue-600, .border-blue-500, .border-indigo-600 {
+  border-color: #006C49 !important;
+}
+
+/* Spinner border */
+.border-t-blue-600 { border-top-color: #006C49 !important; }
+.border-4.border-blue-600.border-t-transparent {
+  border-color: #006C49 !important;
+  border-top-color: transparent !important;
+}
+
+/* Focus ring */
+.focus\:ring-blue-500:focus, .focus\:ring-indigo-500:focus {
+  --tw-ring-color: rgba(0, 108, 73, 0.4) !important;
+}
+
+/* Shadows */
+.shadow-blue-500\/30, .shadow-blue-600\/30,
+.shadow-blue-500\/20, .shadow-blue-600\/20 {
+  --tw-shadow-color: rgba(0, 108, 73, 0.3) !important;
+}
+
+/* Gradients */
+.from-blue-600 { --tw-gradient-from: #006C49 !important; }
+.to-indigo-600 { --tw-gradient-to: #2B6954 !important; }
 
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar {
