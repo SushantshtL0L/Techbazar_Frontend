@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
-import Sidebar from "../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import { handleGetMyOrders } from "@/lib/actions/order.actions";
 import { useTheme } from "@/context/ThemeContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -46,10 +46,9 @@ export default function OrdersPage() {
     };
 
     return (
-        <div className={`flex min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
-            <Sidebar activePage="orders" />
-
-            <main className={`flex-1 p-10 lg:p-20 overflow-y-auto transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-[#fcfcfc]'}`}>
+            <div className="fixed top-0 w-full z-50"><Header /></div>
+            <main className={`pt-32 flex-1 p-10 lg:p-20 overflow-y-auto transition-colors duration-300 ${theme === 'dark' ? 'bg-[#0a0a0a]' : 'bg-white'}`}>
                 <div className="max-w-5xl mx-auto">
                     <header className="mb-16">
                         <h2 className={`text-6xl font-bold tracking-tighter transition-colors ${theme === 'dark' ? 'text-white' : 'text-neutral-900'}`}>My Orders<span className="text-teal-500">.</span></h2>
@@ -139,7 +138,7 @@ export default function OrdersPage() {
                                                                     </div>
                                                                     <div>
                                                                         <h5 className={`font-bold ${theme === 'dark' ? 'text-white' : 'text-neutral-900'}`}>{item.name}</h5>
-                                                                        <p className="text-sm text-neutral-500 font-medium">Size: {item.size} • Qty: {item.quantity}</p>
+                                                                        <p className="text-sm text-neutral-500 font-medium">Size: {item.size} â€¢ Qty: {item.quantity}</p>
                                                                         <p className="text-teal-500 font-bold">Rs {item.price.toLocaleString()}</p>
                                                                     </div>
                                                                 </div>
@@ -217,3 +216,5 @@ export default function OrdersPage() {
         </div>
     );
 }
+
+

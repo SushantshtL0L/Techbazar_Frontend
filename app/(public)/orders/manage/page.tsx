@@ -1,7 +1,7 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../_components/Sidebar";
+import Header from "@/app/(public)/_components/Header";
 import { handleGetAllOrders, handleUpdateOrderStatus } from "@/lib/actions/order.actions";
 import { useTheme } from "@/context/ThemeContext";
 import { useAuth } from "@/context/AuthContext";
@@ -75,10 +75,9 @@ export default function ManageOrdersPage() {
     const textSub = "text-neutral-500";
 
     return (
-        <div className={`flex min-h-screen font-sans transition-colors duration-300 ${isDark ? "bg-[#0a0a0a]" : "bg-[#fcfcfc]"}`}>
-            <Sidebar activePage="manage-orders" />
-
-            <main className={`flex-1 p-10 lg:p-20 overflow-y-auto ${isDark ? "bg-[#0a0a0a]" : "bg-white"}`}>
+        <div className={`min-h-screen font-sans transition-colors duration-300 ${isDark ? "bg-[#0a0a0a]" : "bg-[#fcfcfc]"}`}>
+            <div className="fixed top-0 w-full z-50"><Header /></div>
+            <main className={`pt-32 flex-1 p-10 lg:p-20 overflow-y-auto ${isDark ? "bg-[#0a0a0a]" : "bg-white"}`}>
                 <div className="max-w-5xl mx-auto">
                     <header className="mb-14 flex items-center justify-between flex-wrap gap-4">
                         <div>
@@ -204,7 +203,7 @@ export default function ManageOrdersPage() {
                                                                 <p className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-3">Ship To</p>
                                                                 <p className={`font-bold ${textPrimary}`}>{order.shippingAddress.fullName}</p>
                                                                 <p className="text-sm text-neutral-500">{order.shippingAddress.address}, {order.shippingAddress.city}</p>
-                                                                <p className="text-sm text-neutral-500">📞 {order.shippingAddress.phone}</p>
+                                                                <p className="text-sm text-neutral-500">ðŸ“ž {order.shippingAddress.phone}</p>
                                                             </div>
                                                         )}
                                                     </div>
@@ -285,3 +284,5 @@ export default function ManageOrdersPage() {
         </div>
     );
 }
+
+
