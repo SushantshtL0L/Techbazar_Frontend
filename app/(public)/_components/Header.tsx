@@ -6,7 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { FaSearch, FaBell, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import SettingsDropdown from "@/app/dashboard/_components/SettingsDropdown";
+import SettingsDropdown from "./SettingsDropdown";
 
 const categories = [
   { name: "Home", href: "/" },
