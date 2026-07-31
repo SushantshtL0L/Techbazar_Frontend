@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
 import { FaShoppingCart, FaFilter, FaTh, FaHeadset } from 'react-icons/fa';
 import Header from '../_components/Header';
@@ -8,7 +8,7 @@ const products = [
     id: 1,
     name: "HP Pavilion 15",
     price: "Rs. 78,000",
-    specs: "Intel i5 12th Gen · 8GB · 512GB SSD",
+    specs: "Intel i5 12th Gen Â· 8GB Â· 512GB SSD",
     colors: ["bg-gray-800", "bg-gray-100", "bg-blue-300"],
     image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=400&q=80"
   },
@@ -16,7 +16,7 @@ const products = [
     id: 2,
     name: "HP Envy x360",
     price: "Rs. 1,45,000",
-    specs: "AMD Ryzen 7 · 16GB · 1TB NVMe SSD",
+    specs: "AMD Ryzen 7 Â· 16GB Â· 1TB NVMe SSD",
     colors: ["bg-yellow-400", "bg-black", "bg-gray-300"],
     image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80"
   },
@@ -24,7 +24,7 @@ const products = [
     id: 3,
     name: "HP Spectre x360",
     price: "Rs. 2,20,000",
-    specs: "Intel i7 13th Gen · 16GB · 1TB SSD",
+    specs: "Intel i7 13th Gen Â· 16GB Â· 1TB SSD",
     colors: ["bg-slate-800", "bg-gray-800", "bg-gray-400"],
     image: "https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?auto=format&fit=crop&w=400&q=80"
   },
@@ -32,7 +32,7 @@ const products = [
     id: 4,
     name: "HP OMEN 16",
     price: "Rs. 1,85,000",
-    specs: "Intel i7 13th Gen · 16GB DDR5 · RTX 4060",
+    specs: "Intel i7 13th Gen Â· 16GB DDR5 Â· RTX 4060",
     colors: ["bg-gray-900", "bg-gray-400", "bg-red-600"],
     image: "https://images.unsplash.com/photo-1612287230202-1ff1d85d1bdf?auto=format&fit=crop&w=400&q=80"
   }
@@ -50,7 +50,7 @@ export default function HPLaptopsPage() {
   return (
     <>
       <div className="fixed top-0 w-full z-50">
-        <Header />
+        <div className="fixed top-0 w-full z-50"><Header /></div>
       </div>
       <div className="min-h-screen bg-white pt-24">
 
@@ -212,3 +212,4 @@ export default function HPLaptopsPage() {
     </>
   );
 }
+
