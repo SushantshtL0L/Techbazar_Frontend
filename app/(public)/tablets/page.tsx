@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import Link from 'next/link';
 import { FaHeart, FaStar, FaChevronLeft, FaChevronRight, FaExchangeAlt, FaArrowRight, FaCalculator } from 'react-icons/fa';
 import Header from '../_components/Header';
@@ -76,7 +76,7 @@ export default function TabletsPage() {
   return (
     <>
       <div className="fixed top-0 w-full z-50">
-        <Header />
+        <div className="fixed top-0 w-full z-50"><Header /></div>
       </div>
       <div className="min-h-screen bg-white pb-20 pt-24">
       
@@ -282,3 +282,4 @@ export default function TabletsPage() {
     </>
   );
 }
+
