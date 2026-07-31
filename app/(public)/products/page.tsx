@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import Image from "next/image";
@@ -103,7 +103,7 @@ function ProductsPageContent() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans pt-32">
       <div className="fixed top-0 w-full z-50">
-        <Header />
+        <div className="fixed top-0 w-full z-50"><Header /></div>
       </div>
 
       <main className="max-w-7xl mx-auto px-6 lg:px-8 py-10">
@@ -248,7 +248,7 @@ function ProductsPageContent() {
               </div>
             ) : products.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-center">
-                <div className="text-6xl mb-4">🔍</div>
+                <div className="text-6xl mb-4">ðŸ”</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">No products found</h3>
                 <p className="text-gray-500 mb-6">
                   {search ? `No results for "${search}". Try a different search.` : "No products match your filters."}
@@ -278,7 +278,7 @@ function ProductsPageContent() {
                             className="object-contain p-4 group-hover:scale-105 transition-transform duration-300"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-4xl">📱</div>
+                          <div className="w-full h-full flex items-center justify-center text-4xl">ðŸ“±</div>
                         )}
                         {item.condition && (
                           <span className={`absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full ${conditionColor(item.condition)}`}>
@@ -358,7 +358,7 @@ function ProductsPageContent() {
 
       <footer className="bg-[#0A2540] text-white py-8 mt-16">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center text-sm text-slate-400">
-          <p>© 2026 TechBazar. All rights reserved.</p>
+          <p>Â© 2026 TechBazar. All rights reserved.</p>
         </div>
       </footer>
     </div>
@@ -372,3 +372,4 @@ export default function ProductsPage() {
     </Suspense>
   );
 }
+
